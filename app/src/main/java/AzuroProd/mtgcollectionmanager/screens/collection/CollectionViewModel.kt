@@ -1,7 +1,7 @@
 package AzuroProd.mtgcollectionmanager.screens.collection
 
 import AzuroProd.mtgcollectionmanager.network.Card
-import AzuroProd.mtgcollectionmanager.repositories.CardRepository
+import AzuroProd.mtgcollectionmanager.repositories.cardRepository.CardRepository
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -1,6 +1,7 @@
 package AzuroProd.mtgcollectionmanager
 
 import AzuroProd.mtgcollectionmanager.screens.CollectionScreen
+import AzuroProd.mtgcollectionmanager.screens.deckCreation.DeckCreationScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -43,7 +44,7 @@ fun MtgCollectionManagerApp() {
 
     NavigationSuiteScaffold(
         navigationSuiteItems = {
-            AppDestinations.entries.forEach { dest ->
+            AppDestinations.entries.filter { it != AppDestinations.DECKCREATION} .forEach { dest ->
                 item(
                     icon = {
                         Icon(
@@ -68,7 +69,22 @@ fun MtgCollectionManagerApp() {
                     )
                 }
                 AppDestinations.COLLECTION -> {
-                    CollectionScreen(Modifier.padding(innerPadding))
+                    CollectionScreen(
+                        onAddDeckClick = {
+                            currentDestination = AppDestinations.DECKCREATION
+                        },
+                        modifier = Modifier.padding(innerPadding)
+                    )
+                }
+
+                AppDestinations.DECKCREATION -> {
+                    DeckCreationScreen(
+                        navigateBack = {
+                            currentDestination = AppDestinations.COLLECTION
+                        },
+                        modifier = Modifier.padding(innerPadding)
+                    )
+
                 }
             }
         }

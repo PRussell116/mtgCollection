@@ -16,6 +16,10 @@ interface ScryfallApiService {
     suspend fun search(
         @Query("q") query: String
     ): ScryfallSearchResponse
+    @GET("cards/autocomplete")
+    suspend fun autoComplete(
+        @Query("q") query: String
+    ): ScryfallSearchResponse
 }
 
 object ScryfallApi {

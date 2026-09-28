@@ -8,11 +8,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,14 +34,29 @@ import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun CollectionScreen(
+    onAddDeckClick: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: CollectionViewModel = hiltViewModel()
+    viewModel: CollectionViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(uiState.cards) {
         Log.d("DELETEME", "cards ${uiState.cards.map { it.imageUris?.normal }}")
     }
     Column(modifier.background(MaterialTheme.colorScheme.background)) {
+
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth()
+        ){
+            Button(
+                onClick = onAddDeckClick
+            ){
+                Text(
+                    text = "Add deck"
+                )
+            }
+
+        }
         SearchBar(
             search = viewModel::search
         )

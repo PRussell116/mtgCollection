@@ -1,6 +1,5 @@
-package AzuroProd.mtgcollectionmanager.repositories
+package AzuroProd.mtgcollectionmanager.repositories.cardRepository
 
-import AzuroProd.mtgcollectionmanager.network.ScryfallApi
 import AzuroProd.mtgcollectionmanager.network.ScryfallApiService
 import AzuroProd.mtgcollectionmanager.network.ScryfallSearchResponse
 import android.util.Log
@@ -19,6 +18,10 @@ class CardRepositoryImpl(
         Log.d(TAG, "searchCards: $res ")
         return res
 
+    }
+
+    override suspend fun autoComplete(query: String): ScryfallSearchResponse {
+        return scryfallApi.autoComplete(query)
     }
 
     companion object{

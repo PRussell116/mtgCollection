@@ -1,4 +1,4 @@
-package AzuroProd.mtgcollectionmanager.repositories
+package AzuroProd.mtgcollectionmanager.repositories.cardRepository
 
 import AzuroProd.mtgcollectionmanager.network.ScryfallApiService
 import dagger.Module

@@ -5,6 +5,7 @@ enum class AppDestinations(
 ) {
     HOME("Home"),
     COLLECTION("Collection"),
+    DECKCREATION("Deck creation"),
     SETTINGS("Settings");
 
     val icon: Int
@@ -12,5 +13,8 @@ enum class AppDestinations(
             HOME -> R.drawable.ic_home
             COLLECTION -> R.drawable.ic_favorite
             SETTINGS -> R.drawable.ic_account_box
+            else -> {
+                R.drawable.ic_home
+            }
         }
 }
