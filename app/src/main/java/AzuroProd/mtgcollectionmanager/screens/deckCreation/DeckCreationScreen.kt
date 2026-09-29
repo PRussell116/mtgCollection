@@ -2,6 +2,7 @@ package AzuroProd.mtgcollectionmanager.screens.deckCreation
 
 import AzuroProd.mtgcollectionmanager.enums.DeckType
 import android.content.res.Resources
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -60,6 +61,7 @@ fun DeckCreationScreen(
     val uiState by viewModel.uiState.collectAsState()
     var backgroundImg by remember { mutableStateOf("") }
     val ctx = LocalContext.current
+    var selectedDeckType by remember { mutableStateOf<DeckType?>(null) }
 
 
     Column(
@@ -67,15 +69,18 @@ fun DeckCreationScreen(
         verticalArrangement = Arrangement.spacedBy(15.dp),
         modifier = modifier.fillMaxSize()
     ) {
-        AsyncImage(
-            model = ImageRequest.Builder(ctx)
-                .data( backgroundImg)
-                .addHeader("Accept", "application/json")
-                .addHeader("User-Agent", "MtgCollectionManager/1.0 (Android App)")
-                .build(),
-            contentDescription = null,
-            modifier = Modifier.fillMaxWidth()
-        )
+        AnimatedVisibility(backgroundImg.isNotBlank()) {
+            AsyncImage(
+                model = ImageRequest.Builder(ctx)
+                    .data( backgroundImg)
+                    .addHeader("Accept", "application/json")
+                    .addHeader("User-Agent", "MtgCollectionManager/1.0 (Android App)")
+                    .build(),
+                contentDescription = null,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+
 
 
 
@@ -146,6 +151,7 @@ fun DeckCreationScreen(
                             text = { Text(entry.name) },
                             onClick = {
                                 deckTypeTextFieldState.setTextAndPlaceCursorAtEnd(entry.name)
+                                selectedDeckType = entry
                                 expanded = false
                             }
                         )
@@ -215,7 +221,15 @@ fun DeckCreationScreen(
 
 
             Button(
-                onClick = navigateBack
+                onClick = {
+                    viewModel.createDeck(
+                        name = titleTextFieldState.text.toString(),
+                        type = selectedDeckType,
+                        img = backgroundImg
+
+                    )
+                    navigateBack()
+                }
             ) {
                 Text(
                     text = "Create",

@@ -23,9 +23,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -39,9 +42,8 @@ fun CollectionScreen(
     viewModel: CollectionViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    LaunchedEffect(uiState.cards) {
-        Log.d("DELETEME", "cards ${uiState.cards.map { it.imageUris?.normal }}")
-    }
+    val ctx = LocalContext.current
+
     Column(modifier.background(MaterialTheme.colorScheme.background)) {
 
         Row(
@@ -69,6 +71,23 @@ fun CollectionScreen(
             modifier = Modifier
 
         ){
+            items(uiState.decks){
+                Column {
+                    AsyncImage(
+                        model = ImageRequest.Builder(ctx)
+                            .data(it.img)
+                            .addHeader("Accept", "application/json")
+                            .addHeader("User-Agent", "MtgCollectionManager/1.0 (Android App)")
+                            .build(),
+                        contentDescription = it.name
+
+                    )
+                    Text(it.name)
+                }
+
+            }
+
+
             items(uiState.cards){
 //                val state= rememberAsyncImagePainter(
 //                    model = it.imageUris?.small,
